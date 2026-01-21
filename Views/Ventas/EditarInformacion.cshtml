@@ -1,0 +1,666 @@
+﻿@model CrudNet7MVC.Models.Ventas
+@{
+    ViewData["Title"] = "Ventas";
+}
+
+@* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script> *@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+
+
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    i {
+        margin-right: 10px;
+    }
+
+    /*------------------------*/
+    input:focus,
+    button:focus,
+    .form-control:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #fff;
+    }
+    /*----------step-wizard------------*/
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-center {
+        justify-content: center;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    /*---------signup-step-------------*/
+    .bg-color {
+        background-color: #333;
+    }
+
+    .signup-step-container {
+        padding: 150px 0px;
+        padding-bottom: 60px;
+    }
+
+
+
+
+    .wizard .nav-tabs {
+        position: relative;
+        margin-bottom: 0;
+        border-bottom-color: transparent;
+    }
+
+    .wizard > div.wizard-inner {
+        position: relative;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+
+    .connecting-line {
+        height: 2px;
+        background: #e0e0e0;
+        position: absolute;
+        width: 75%;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: 15px;
+        z-index: 1;
+    }
+
+    .wizard .nav-tabs > li.active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+        color: #555555;
+        cursor: default;
+        border: 0;
+        border-bottom-color: transparent;
+    }
+
+    span.round-tab {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        border-radius: 50%;
+        background: #fff;
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        text-align: center;
+        font-size: 16px;
+        color: #0e214b;
+        font-weight: 500;
+        border: 1px solid #ddd;
+    }
+
+        span.round-tab i {
+            color: #555555;
+        }
+
+    .wizard li.active span.round-tab {
+        background: #0db02b;
+        color: #fff;
+        border-color: #0db02b;
+    }
+
+        .wizard li.active span.round-tab i {
+            color: #5bc0de;
+        }
+
+    .wizard .nav-tabs > li.active > a i {
+        color: #0db02b;
+    }
+
+    .wizard .nav-tabs > li {
+        width: 25%;
+    }
+
+    .wizard li:after {
+        content: " ";
+        position: absolute;
+        left: 46%;
+        opacity: 0;
+        margin: 0 auto;
+        bottom: 0px;
+        border: 5px solid transparent;
+        border-bottom-color: red;
+        transition: 0.1s ease-in-out;
+    }
+
+
+
+    .wizard .nav-tabs > li a {
+        width: 30px;
+        height: 30px;
+        margin: 20px auto;
+        border-radius: 100%;
+        padding: 0;
+        background-color: transparent;
+        position: relative;
+        top: 0;
+    }
+
+        .wizard .nav-tabs > li a i {
+            position: absolute;
+            top: -15px;
+            font-style: normal;
+            font-weight: 400;
+            white-space: nowrap;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .wizard .nav-tabs > li a:hover {
+            background: transparent;
+        }
+
+    .wizard .tab-pane {
+        position: relative;
+        padding-top: 20px;
+    }
+
+
+    .wizard h3 {
+        margin-top: 0;
+    }
+
+    .prev-step,
+    .next-step {
+        font-size: 13px;
+        padding: 8px 24px;
+        border: none;
+        border-radius: 4px;
+        margin-top: 30px;
+    }
+
+    .next-step {
+        background-color: #0db02b;
+    }
+
+    .skip-btn {
+        background-color: #cec12d;
+    }
+
+    .step-head {
+        font-size: 20px;
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    .term-check {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .custom-file {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0;
+    }
+
+    .custom-file-input {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 40px;
+        margin: 0;
+        opacity: 0;
+    }
+
+    .custom-file-label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: 40px;
+        padding: .375rem .75rem;
+        font-weight: 400;
+        line-height: 2;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+    }
+
+        .custom-file-label::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            display: block;
+            height: 38px;
+            padding: .375rem .75rem;
+            line-height: 2;
+            color: #495057;
+            content: "Browse";
+            background-color: #e9ecef;
+            border-left: inherit;
+            border-radius: 0 .25rem .25rem 0;
+        }
+
+    .footer-link {
+        margin-top: 30px;
+    }
+
+    .all-info-container {
+    }
+
+    .list-content {
+        margin-bottom: 10px;
+    }
+
+        .list-content a {
+            padding: 10px 15px;
+            width: 100%;
+            display: inline-block;
+            background-color: #f5f5f5;
+            position: relative;
+            color: #565656;
+            font-weight: 400;
+            border-radius: 4px;
+        }
+
+            .list-content a[aria-expanded="true"] i {
+                transform: rotate(180deg);
+            }
+
+            .list-content a i {
+                text-align: right;
+                position: absolute;
+                top: 15px;
+                right: 10px;
+                transition: 0.5s;
+            }
+
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+        background-color: #fdfdfd;
+    }
+
+    .list-box {
+        padding: 10px;
+    }
+
+    .signup-logo-header .logo_area {
+        width: 200px;
+    }
+
+    .signup-logo-header .nav > li {
+        padding: 0;
+    }
+
+    .signup-logo-header .header-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .list-inline li {
+        display: inline-block;
+    }
+
+    .pull-right {
+        float: right;
+    }
+    /*-----------custom-checkbox-----------*/
+    /*----------Custom-Checkbox---------*/
+    input[type="checkbox"] {
+        position: relative;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+        input[type="checkbox"]::before,
+        input[type="checkbox"]::after {
+            position: absolute;
+            content: "";
+            display: inline-block;
+        }
+
+        input[type="checkbox"]::before {
+            height: 16px;
+            width: 16px;
+            border: 1px solid #999;
+            left: 0px;
+            top: 0px;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+
+        input[type="checkbox"]::after {
+            height: 5px;
+            width: 9px;
+            left: 4px;
+            top: 4px;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "";
+            border-left: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            transform: rotate(-45deg);
+        }
+
+        input[type="checkbox"]:checked::before {
+            background-color: #18ba60;
+            border-color: #18ba60;
+        }
+</style>
+<style>
+    .is-invalid {
+        border: 2px solid red;
+    }
+
+
+    .hide {
+        display: none;
+    }
+
+    .show {
+        display: inline;
+    }
+</style>
+<h2 class="text-center">Editar Usuario</h2>
+<section class="signup-step-container">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="wizard">
+                    <div class="wizard-inner">
+                        <div class="connecting-line"></div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active" id="step1">
+                                <a href="#ventas" data-toggle="tab" aria-controls="ventas" role="tab" aria-expanded="true"><span class="round-tab">1 </span> <i>Step 1</i></a>
+                            </li>
+                            <li role="presentation" class="disabled" id="step2">
+                                <a href="#facturacion" data-toggle="tab" aria-controls="facturacion" role="tab" aria-expanded="false"><span class="round-tab">2</span> <i>Step 2</i></a>
+                            </li>
+                            <li role="presentation" class="disabled" id="step3">
+                                <a href="#contacto" data-toggle="tab" aria-controls="contacto" role="tab"><span class="round-tab">3</span> <i>Step 3</i></a>
+                            </li>
+                            <li role="presentation" class="disabled" id="step4">
+                                <a href="#resumen" data-toggle="tab" aria-controls="resumen" role="tab"><span class="round-tab">4</span> <i>Step 4</i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <form role="form" action="index.html" class="login-box">
+                        <input type="hidden" id="Id" value="@Model.Id" />
+                        <div class="tab-content" id="main_form">
+                            <div class="tab-pane active" role="tabpanel" id="ventas">
+                                <h4 class="text-center">Ventas</h4>
+                                <div class="form-group">
+                                    <label>Monto</label>
+                                    <input type="text" asp-for="Monto" class="form-control" name="monto" value="@Model.Monto" />                           
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Descripcion</label>
+                                    <input type="text" asp-for="Descripcion" class="form-control" name="descripcion" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>IVA</label>
+                                    <input type="text" asp-for="IVA" class="form-control" name="iva" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Total</label>
+                                    <input type="text" asp-for="Total" class="form-control" name="total" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="default-btn next-step">Continuar</button></li>
+                                </ul>
+                            </div>
+
+                            <div class="tab-pane" role="tabpanel" id="facturacion">
+                                <h4 class="text-center">Facturación</h4>
+                                <div class="form-group">
+                                    <label>Nombre o Razón Social</label>
+                                    <input type="text" asp-for="RazonSocial" class="form-control" name="razon_social" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>RFC</label>
+                                    <input type="text" asp-for="RFC" class="form-control" name="rfc" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Domicilio Fiscal</label>
+                                    <input type="text" asp-for="DomicilioFiscal" class="form-control" name="domicilio_fiscal" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefono</label>
+                                    <input type="text" asp-for="Telefono" class="form-control" name="telefono_facturacion" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo Electronico</label>
+                                    <input type="text" asp-for="CorreoElectronico" class="form-control" name="correo_facturacion" />                                   
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>                             
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="default-btn prev-step">Atrás</button></li>
+                                    <li><button type="button" class="default-btn next-step">Continuar</button></li>
+                                </ul>
+                            </div>
+
+                            <div class="tab-pane" role="tabpanel" id="contacto">
+                                <h4 class="text-center">Contacto</h4>
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input type="text" asp-for="NombreContacto" class="form-control" name="nombre_contacto" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefono Contacto</label>
+                                    <input type="text" asp-for="TelefonoContacto" class="form-control" name="telefono_contacto" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Celular</label>
+                                    <input type="text" asp-for="CelularContacto" class="form-control" name="celular_contacto" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" asp-for="EmailContacto" class="form-control" name="email_contacto" />
+                                    <span class="hide" style="color:red;">Requerido</span>
+                                </div>
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="default-btn prev-step">Atrás</button></li>
+                                    <li><button type="button" class="default-btn next-step">Continuar</button></li>
+                                </ul>
+                            </div>
+
+                            <div class="tab-pane" role="tabpanel" id="resumen">
+                                <h4 class="text-center">Resumen</h4>
+                                <p><strong>Monto:</strong> <span id="resumen-monto"></span></p>
+                                <p><strong>Descripción:</strong> <span id="resumen-descripcion"></span></p>
+                                <p><strong>IVA:</strong> <span id="resumen-iva"></span></p>
+                                <p><strong>Total:</strong> <span id="resumen-total"></span></p>
+                                <p><strong>Razón Social:</strong> <span id="resumen-razon-social"></span></p>
+                                <p><strong>RFC:</strong> <span id="resumen-rfc"></span></p>
+                                <p><strong>Domicilio Fiscal:</strong> <span id="resumen-domicilio-fiscal"></span></p>
+                                <p><strong>Teléfono Facturación:</strong> <span id="resumen-telefono-facturacion"></span></p>
+                                <p><strong>Correo Facturación:</strong> <span id="resumen-correo-facturacion"></span></p>
+                                <p><strong>Nombre Contacto:</strong> <span id="resumen-nombre-contacto"></span></p>
+                                <p><strong>Teléfono Contacto:</strong> <span id="resumen-telefono-contacto"></span></p>
+                                <p><strong>Celular Contacto:</strong> <span id="resumen-celular-contacto"></span></p>
+                                <p><strong>Email Contacto:</strong> <span id="resumen-email-contacto"></span></p>
+                                <ul class="list-inline pull-right">
+                                    <li><button type="button" class="btn btn-primary prev-step" style="margin-top: 0;">Atrás</button></li>
+                                    <li><button type="button" class="btn btn-primary finalizar-wizard">Editar Usuario</button></li>
+                                </ul>                                
+                            </div>
+                             <a asp-controller="Ventas" asp-action="InicioResumen">Volver</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+   $(document).ready(function () {
+    $('.wizard .nav-tabs li').removeClass('disabled');
+    
+    function llenarResumen() {
+        $("#resumen-monto").text($("input[name='monto']").val());
+        $("#resumen-descripcion").text($("input[name='descripcion']").val());
+        $("#resumen-iva").text($("input[name='iva']").val());
+        $("#resumen-total").text($("input[name='total']").val());
+        $("#resumen-razon-social").text($("input[name='razon_social']").val());
+        $("#resumen-rfc").text($("input[name='rfc']").val());
+        $("#resumen-domicilio-fiscal").text($("input[name='domicilio_fiscal']").val());
+        $("#resumen-telefono-facturacion").text($("input[name='telefono_facturacion']").val());
+        $("#resumen-correo-facturacion").text($("input[name='correo_facturacion']").val());
+        $("#resumen-nombre-contacto").text($("input[name='nombre_contacto']").val());
+        $("#resumen-telefono-contacto").text($("input[name='telefono_contacto']").val());
+        $("#resumen-celular-contacto").text($("input[name='celular_contacto']").val());
+        $("#resumen-email-contacto").text($("input[name='email_contacto']").val());
+    }
+
+    $('.wizard .nav-tabs > li > a').on('click', function (e) {
+        e.preventDefault(); 
+        
+        var $li = $(this).parent();
+     
+        $('.wizard .nav-tabs li').removeClass('active');
+        $li.addClass('active');
+        
+        const targetId = $(this).attr('aria-controls');
+        
+        $('.tab-pane').removeClass('active');
+        $('#' + targetId).addClass('active');
+        
+        if (targetId === "resumen") {
+            llenarResumen();
+        }
+    });
+
+    function validarCampos(tabId) {
+        let isValid = true;
+        $(`#${tabId} .form-control`).each(function () {
+            if ($(this).val() === "") {
+                $(this).addClass('is-invalid');
+                const nextElement = $(this).next();
+                nextElement[0].className = "show";
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+                const nextElement = $(this).next();
+                nextElement[0].className = "hide";
+            }
+        });
+        return isValid;
+    }
+
+    $(".next-step").click(function (e) {
+        e.preventDefault();
+
+        const activeTab = $('.wizard .nav-tabs li.active');
+        const nextTab = activeTab.next();
+        const tabId = activeTab.find("a").attr("aria-controls");
+
+        if (validarCampos(tabId)) {
+            activeTab.removeClass('active');
+            $('#' + tabId).removeClass('active');
+            
+            nextTab.removeClass('disabled').addClass('active');
+            
+            const nextTabId = nextTab.find('a').attr('aria-controls');
+            $('#' + nextTabId).addClass('active');
+
+            if (nextTabId === "resumen") {
+                llenarResumen();
+            }
+        } else {
+            alert("Completa todos los campos obligatorios.");
+        }
+    });
+
+    $(".prev-step").click(function (e) {
+        e.preventDefault();
+
+        const activeTab = $('.wizard .nav-tabs li.active');
+        const prevTab = activeTab.prev();
+        const currentTabId = activeTab.find("a").attr("aria-controls");
+
+        activeTab.removeClass('active');
+        $('#' + currentTabId).removeClass('active');
+
+        prevTab.removeClass('disabled').addClass('active');
+
+        const prevTabId = prevTab.find('a').attr('aria-controls');
+        $('#' + prevTabId).addClass('active');
+    });
+
+    $(".finalizar-wizard").click(function (e) {
+        e.preventDefault();
+
+        const datos = {
+            Id: parseInt($("#Id").val()) || 0,
+            Monto: parseFloat($("#resumen-monto").text()),
+            Descripcion: $("#resumen-descripcion").text(),
+            IVA: parseFloat($("#resumen-iva").text()),
+            Total: parseFloat($("#resumen-total").text()),
+            RazonSocial: $("#resumen-razon-social").text(),
+            RFC: $("#resumen-rfc").text(),
+            DomicilioFiscal: $("#resumen-domicilio-fiscal").text(),
+            Telefono: $("#resumen-telefono-facturacion").text(),
+            CorreoElectronico: $("#resumen-correo-facturacion").text(),
+            NombreContacto: $("#resumen-nombre-contacto").text(),
+            TelefonoContacto: $("#resumen-telefono-contacto").text(),
+            CelularContacto: $("#resumen-celular-contacto").text(),
+            EmailContacto: $("#resumen-email-contacto").text()
+        };
+
+        $.ajax({
+            url: '/Ventas/EditarInformacion',
+            type: 'POST',
+            data: JSON.stringify(datos),
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                alert(response.message);
+                window.location.href = response.redirectUrl;
+            },
+            error: function () {
+                alert("No se pudieron guardar los datos.");
+            }
+        });
+    });
+});
+</script>
+
+
